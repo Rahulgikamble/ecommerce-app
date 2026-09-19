@@ -1,7 +1,3 @@
-// Fetches fake product data (via axios) from fakestoreapi.com and inserts it
-// into your MongoDB Atlas database, mapped to our Product schema.
-// Run with: npm run seed
-
 import axios from 'axios';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';

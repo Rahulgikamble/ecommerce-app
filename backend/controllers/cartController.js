@@ -1,13 +1,11 @@
 import User from '../models/User.js';
 import Product from '../models/Product.js';
 
-// @route GET /api/cart
 export const getCart = async (req, res) => {
   const user = await User.findById(req.user._id).populate('cart.product');
   res.json(user.cart);
 };
 
-// @route POST /api/cart  { productId, quantity }
 export const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -31,7 +29,6 @@ export const addToCart = async (req, res) => {
   }
 };
 
-// @route PUT /api/cart/:productId  { quantity }
 export const updateCartItem = async (req, res) => {
   try {
     const { quantity } = req.body;
@@ -53,7 +50,6 @@ export const updateCartItem = async (req, res) => {
   }
 };
 
-// @route DELETE /api/cart/:productId
 export const removeFromCart = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);

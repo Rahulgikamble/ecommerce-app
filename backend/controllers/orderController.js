@@ -1,7 +1,6 @@
 import Order from '../models/Order.js';
 import User from '../models/User.js';
 
-// @route POST /api/orders  (creates order from current cart, then clears cart)
 export const createOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate('cart.product');
@@ -34,7 +33,6 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// @route GET /api/orders/myorders
 export const getMyOrders = async (req, res) => {
   const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
   res.json(orders);

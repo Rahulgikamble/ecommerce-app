@@ -3,9 +3,7 @@ import { getCart, addToCart, updateCartItem, removeFromCart } from '../controlle
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-
-router.use(protect); // every cart route requires login
-
+router.use(protect);
 router.get('/', getCart);
 router.post('/', addToCart);
 router.put('/:productId', updateCartItem);
