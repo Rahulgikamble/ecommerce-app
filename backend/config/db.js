@@ -19,7 +19,7 @@ const connectDB = async () => {
         return conn;
       })
       .catch((error) => {
-        cachedConnection = null;
+        cachedConnection = null; // allow a retry on the next call instead of staying stuck
         console.error(`MongoDB connection error: ${error.message}`);
         if (!process.env.VERCEL) process.exit(1);
         throw error;

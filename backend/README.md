@@ -1,34 +1,26 @@
-# E-Commerce Backend — Vercel Serverless Version
+# E-Commerce Backend — Vercel Zero-Config Version
 
-This is your e-commerce backend restructured to run as Vercel serverless
-functions instead of a normal always-on server, so it has no monthly hour
-cap and never sleeps.
+Vercel now has NATIVE, zero-config support for Express apps — it automatically
+detects app.js (or index.js/server.js) and runs it as a single Vercel Function.
+No serverless-http wrapper, no vercel.json, no api/ folder needed at all.
 
-## What changed from the Render version
-- server.js now only handles LOCAL development (npm run dev)
-- app.js holds the actual Express app (routes, middleware) — shared by both
-  local dev and Vercel
-- api/index.js is the new Vercel entry point (auto-detected by Vercel)
-- config/db.js now caches the MongoDB connection between requests — this
-  is essential for serverless; without it, every request would try to
-  open a new DB connection and could exhaust your Atlas connection limit
-- vercel.json routes every request through api/index.js
+## What's different from the Render version
+- server.js is used for LOCAL development only (npm run dev)
+- app.js holds the actual Express app — Vercel auto-detects THIS file and
+  deploys it directly, because it ends with `export default app`
+- config/db.js caches the MongoDB connection between invocations, which
+  still matters for performance even with Vercel's Fluid compute model
 
 ## Local setup (unchanged)
 npm install
-cp .env.example .env      # same MONGO_URI, JWT_SECRET as before
-npm run dev                 # still works exactly as before, on port 5000
+cp .env.example .env
+npm run dev
 
 ## Deploying to Vercel
-1. Push this to GitHub (replacing your old backend folder, or as a new repo)
-2. In Vercel: Add New Project → import the repo → set Root Directory to
-   wherever this backend folder lives in your repo
-3. Framework Preset: Other (not Vite — this isn't a frontend)
+1. Push to GitHub
+2. Vercel: Add New Project → import repo → Root Directory = this backend folder
+3. Framework Preset: Vercel should auto-detect "Express" — leave it
 4. Add environment variables: MONGO_URI, JWT_SECRET
 5. Deploy
-6. Your API will be live at https://your-project.vercel.app — test it by
-   visiting the URL directly, you should see "API is running..."
-7. Update your e-commerce FRONTEND's VITE_API_URL environment variable
-   (in ITS Vercel project settings) to point here, e.g.:
-   VITE_API_URL=https://your-new-backend.vercel.app/api
-   Then redeploy the frontend.
+6. Visit the URL directly — you should see "API is running..."
+7. Update your frontend's VITE_API_URL to this URL + /api, then redeploy
